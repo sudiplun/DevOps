@@ -26,10 +26,10 @@ metadata:
 spec:
   selector:
     app: nginx
-  type: NodePort  # Change to LoadBalancer if on cloud
+  # type: NodePort  # Change to LoadBalancer if on cloud
   ports:
     - protocol: TCP
       port: 8080
       targetPort: 80
-      nodePort: 30002
+      # nodePort: 30002
 # Appling this manifest creates a new service named "nginx-service" with the service type [NodePort](typesOfServices.md). The Service targets target TCP port 80 on any port with the `nginx` label.
