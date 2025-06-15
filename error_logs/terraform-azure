@@ -1,0 +1,539 @@
+terraform init
+Initializing the backend...
+Initializing provider plugins...
+- Reusing previous version of hashicorp/azurerm from the dependency lock file
+╷
+│ Error: Failed to query available provider packages
+│
+│ Could not retrieve the list of available versions for provider hashicorp/azurerm: locked provider registry.terraform.io/hashicorp/azurerm 3.117.1 does not match configured version
+│ constraint ~> 4.33; must use terraform init -upgrade to allow selection of new versions
+│
+│ To see which modules are currently depending on hashicorp/azurerm and what versions are specified, run the following command:
+│     terraform providers
+╵
+~/DevOps--/terraform (practice ✚)> terraform init -upgrad
+╷
+│ Error: Failed to parse command-line flags
+│
+│ flag provided but not defined: -upgrad
+╵
+~/DevOps--/terraform (practice ✚)> terraform init -upgrade
+Initializing the backend...
+Initializing provider plugins...
+- Finding hashicorp/azurerm versions matching "~> 4.33"...
+- Installing hashicorp/azurerm v4.33.0...
+- Installed hashicorp/azurerm v4.33.0 (signed by HashiCorp)
+Terraform has made some changes to the provider dependency selections recorded
+in the .terraform.lock.hcl file. Review those changes and commit them to your
+version control system if they represent changes you intended to make.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+~/DevOps--/terraform (practice ✚)> terraform plan
+
+Planning failed. Terraform encountered an error while generating this plan.
+
+╷
+│ Error: building account: could not acquire access token to parse claims: clientCredentialsToken: received HTTP status 401 with response: {"error":"invalid_client","error_description":"AADSTS7000215: Invalid client secret provided. Ensure the secret being sent in the request is the client secret value, not the client secret ID, for a secret added to app '0b570f3c-0c34-4c23-bca0-f9e9bfce888b'. Trace ID: c1d918bc-b53e-455e-bc6f-773b6d571e00 Correlation ID: 48d9fe5f-77d0-4910-a901-58a984809086 Timestamp: 2025-06-15 00:51:53Z","error_codes":[7000215],"timestamp":"2025-06-15 00:51:53Z","trace_id":"c1d918bc-b53e-455e-bc6f-773b6d571e00","correlation_id":"48d9fe5f-77d0-4910-a901-58a984809086","error_uri":"https://login.microsoftonline.com/error?code=7000215"}
+│
+│   with provider["registry.terraform.io/hashicorp/azurerm"],
+│   on main.tf line 11, in provider "azurerm":
+│   11: provider "azurerm" {
+│
+╵
+~/DevOps--/terraform (practice ✚)> terraform plan
+
+Planning failed. Terraform encountered an error while generating this plan.
+
+╷
+│ Error: building account: could not acquire access token to parse claims: clientCredentialsToken: received HTTP status 401 with response: {"error":"invalid_client","error_description":"AADSTS7000215: Invalid client secret provided. Ensure the secret being sent in the request is the client secret value, not the client secret ID, for a secret added to app '6f884e91-081f-476e-9e88-8b5f7e06c1d8'. Trace ID: ac0dcade-2fb2-484d-9fe9-ab81634a1f00 Correlation ID: 054c0e98-a984-4504-b03c-35afa27fba37 Timestamp: 2025-06-15 01:29:04Z","error_codes":[7000215],"timestamp":"2025-06-15 01:29:04Z","trace_id":"ac0dcade-2fb2-484d-9fe9-ab81634a1f00","correlation_id":"054c0e98-a984-4504-b03c-35afa27fba37","error_uri":"https://login.microsoftonline.com/error?code=7000215"}
+│
+│   with provider["registry.terraform.io/hashicorp/azurerm"],
+│   on main.tf line 11, in provider "azurerm":
+│   11: provider "azurerm" {
+│
+╵
+~/DevOps--/terraform (practice ✚)> terraform plan
+
+Planning failed. Terraform encountered an error while generating this plan.
+
+╷
+│ Error: populating Resource Provider cache: listing Resource Providers: loading results: unexpected status 403 (403 Forbidden) with error: AuthorizationFailed: The client 'bc7ae3c7-3ffa-436dgd-96cfsd8-491dggfa18c7d' with object id 'bc7ae3c7-3ffa-436dgd-96cfsd8-491dggfa18c7d' does not have authorization to perform action 'Microsoft.Resources/subscriptions/providers/read' over scope '/subscriptions/de353455-52c0-4fc5-a7a2-23403242432k' or the scope is invalid. If access was recently granted, please refresh your credentials.
+│
+│   with provider["registry.terraform.io/hashicorp/azurerm"],
+│   on main.tf line 11, in provider "azurerm":
+│   11: provider "azurerm" {
+│
+╵
+~/DevOps--/terraform (practice ✚)> terraform plan
+
+Planning failed. Terraform encountered an error while generating this plan.
+
+╷
+│ Error: Encountered an error whilst ensuring Resource Providers are registered.
+│ Terraform automatically attempts to register the Azure Resource Providers it supports, to
+│ ensure it is able to provision resources.
+│ If you don't have permission to register Resource Providers you may wish to disable this
+│ functionality by adding the following to the Provider block:
+│
+│ provider "azurerm" {
+│   resource_provider_registrations = "none"
+│ }
+│
+│ Please note that if you opt out of Resource Provider Registration and Terraform tries
+│ to provision a resource from a Resource Provider which is unregistered, then the errors
+│ may appear misleading - for example:
+│
+│ > API version 2019-XX-XX was not found for Microsoft.Foo
+│
+│ Could suggest that the Resource Provider "Microsoft.Foo" requires registration, but
+│ this could also indicate that this Azure Region doesn't support this API version.
+│
+│ More information on the "resource_provider_registrations" property can be found here:
+│ https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs#resource-provider-registrations
+│
+│ Encountered the following errors:
+│
+│ registering resource provider "Microsoft.ApiManagement": unexpected status 409 (409 Conflict) with error: ConflictingConcurrentWriteNotAllowed: The operation was interrupted by a conflicting concurrent write on the same entity. Please retry later.
+│ registering resource provider "Microsoft.ContainerInstance": unexpected status 409 (409 Conflict) with error: ConflictingConcurrentWriteNotAllowed: The operation was interrupted by a conflicting concurrent write on the same entity. Please retry later.
+│ registering resource provider "Microsoft.Web": unexpected status 409 (409 Conflict) with error: ConflictingConcurrentWriteNotAllowed: The operation was interrupted by a conflicting concurrent write on the same entity. Please retry later.
+│ registering resource provider "Microsoft.DBforMySQL": unexpected status 409 (409 Conflict) with error: ConflictingConcurrentWriteNotAllowed: The operation was interrupted by a conflicting concurrent write on the same entity. Please retry later.
+│ registering resource provider "Microsoft.DBforPostgreSQL": unexpected status 409 (409 Conflict) with error: ConflictingConcurrentWriteNotAllowed: The operation was interrupted by a conflicting concurrent write on the same entity. Please retry later.
+│ registering resource provider "Microsoft.HDInsight": unexpected status 409 (409 Conflict) with error: ConflictingConcurrentWriteNotAllowed: The operation was interrupted by a conflicting concurrent write on the same entity. Please retry later.
+│ registering resource provider "Microsoft.Sql": unexpected status 409 (409 Conflict) with error: ConflictingConcurrentWriteNotAllowed: The operation was interrupted by a conflicting concurrent write on the same entity. Please retry later.
+│ registering resource provider "Microsoft.Kusto": unexpected status 409 (409 Conflict) with error: ConflictingConcurrentWriteNotAllowed: The operation was interrupted by a conflicting concurrent write on the same entity. Please retry later.
+│ registering resource provider "Microsoft.Cache": unexpected status 409 (409 Conflict) with error: ConflictingConcurrentWriteNotAllowed: The operation was interrupted by a conflicting concurrent write on the same entity. Please retry later.
+│
+│   with provider["registry.terraform.io/hashicorp/azurerm"],
+│   on main.tf line 11, in provider "azurerm":
+│   11: provider "azurerm" {
+│
+╵
+~/DevOps--/terraform (practice ✚)> terraform init -upgrade
+Initializing the backend...
+Initializing provider plugins...
+- Finding hashicorp/azurerm versions matching "~> 4.0"...
+- Using previously-installed hashicorp/azurerm v4.33.0
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+~/DevOps--/terraform (practice ✚)> terraform plan
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # azurerm_linux_virtual_machine.example will be created
+  + resource "azurerm_linux_virtual_machine" "example" {
+      + admin_username                                         = "adminuser"
+      + allow_extension_operations                             = true
+      + bypass_platform_safety_checks_on_user_schedule_enabled = false
+      + computer_name                                          = (known after apply)
+      + disable_password_authentication                        = true
+      + disk_controller_type                                   = (known after apply)
+      + extensions_time_budget                                 = "PT1H30M"
+      + id                                                     = (known after apply)
+      + location                                               = "westeurope"
+      + max_bid_price                                          = -1
+      + name                                                   = "example-machine"
+      + network_interface_ids                                  = (known after apply)
+      + patch_assessment_mode                                  = "ImageDefault"
+      + patch_mode                                             = "ImageDefault"
+      + platform_fault_domain                                  = -1
+      + priority                                               = "Regular"
+      + private_ip_address                                     = (known after apply)
+      + private_ip_addresses                                   = (known after apply)
+      + provision_vm_agent                                     = true
+      + public_ip_address                                      = (known after apply)
+      + public_ip_addresses                                    = (known after apply)
+      + resource_group_name                                    = "example-resources"
+      + size                                                   = "Standard_F2"
+      + virtual_machine_id                                     = (known after apply)
+      + vm_agent_platform_updates_enabled                      = (known after apply)
+
+      + admin_ssh_key {
+          + public_key = <<-EOT
+                ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCrIGoDyZr2Cf47PrEr4XbWMLsQrugzOyY5fbmXDfSbhhCHRfqYRQNrSc0fwKUK6n6GU7fwZM57JpT5ABvR/UYJ2iLFJ/HYiZallE7ejyC2/Fo9NWarmAsrzZwJtncgeoAHoHgeSJYL5+88bD+2mh0puuBHLoFNl6ZQncxvfIHOq0I9EU5qveU9/cGgGX8ncKP69nZfUO0oSdnRoeY2A8McREX4kKErxm0N1FgteMac6FPt0V8sBSwX0xbgCgzHxpPDGWyhV6qkiBBVq35iYrH+Zg3a4UpOALhwxo46PLXtgtIKtGp3ard3oZSdNkuuHhiuUrfvObejqSfHun58+rcLKUeQeD9U7qjngR2xZc5cZ295Q64AAEQzJjpnzlk9X23FySf3saUsEzOhSlgShTwP8JoCAbCmrgoRvcJPMEKVRqScXnrBIE5HB3AiqNWVhcgXPXq2jZDqm+LgeyZX8qmWXtleyouv7tEeA00Jwx607/nTOoS5ShOcXf6ZbGGzRt/lJdJqENFph/avQ/pxC74Wd8mgLXjmVD86sODlTMT+sd5y+zX1eCMOt4kcQIM1J/r5v8hT/rxfAU2OXvfB5K0qH+7e2utYEXbFe4gfup46fFQkJImbC9RzC0GTJe14Q==  sls@archlinux
+            EOT
+          + username   = "adminuser"
+        }
+
+      + os_disk {
+          + caching                   = "ReadWrite"
+          + disk_size_gb              = (known after apply)
+          + id                        = (known after apply)
+          + name                      = (known after apply)
+          + storage_account_type      = "Standard_LRS"
+          + write_accelerator_enabled = false
+        }
+
+      + source_image_reference {
+          + offer     = "0001-com-ubuntu-server-jammy"
+          + publisher = "Canonical"
+          + sku       = "22_04-lts"
+          + version   = "latest"
+        }
+
+      + termination_notification (known after apply)
+    }
+
+  # azurerm_network_interface.example will be created
+  + resource "azurerm_network_interface" "example" {
+      + accelerated_networking_enabled = false
+      + applied_dns_servers            = (known after apply)
+      + id                             = (known after apply)
+      + internal_domain_name_suffix    = (known after apply)
+      + ip_forwarding_enabled          = false
+      + location                       = "westeurope"
+      + mac_address                    = (known after apply)
+      + name                           = "example-nic"
+      + private_ip_address             = (known after apply)
+      + private_ip_addresses           = (known after apply)
+      + resource_group_name            = "example-resources"
+      + virtual_machine_id             = (known after apply)
+
+      + ip_configuration {
+          + gateway_load_balancer_frontend_ip_configuration_id = (known after apply)
+          + name                                               = "internal"
+          + primary                                            = (known after apply)
+          + private_ip_address                                 = (known after apply)
+          + private_ip_address_allocation                      = "Dynamic"
+          + private_ip_address_version                         = "IPv4"
+          + public_ip_address_id                               = (known after apply)
+          + subnet_id                                          = (known after apply)
+        }
+    }
+
+  # azurerm_public_ip.example will be created
+  + resource "azurerm_public_ip" "example" {
+      + allocation_method       = "Dynamic"
+      + ddos_protection_mode    = "VirtualNetworkInherited"
+      + fqdn                    = (known after apply)
+      + id                      = (known after apply)
+      + idle_timeout_in_minutes = 4
+      + ip_address              = (known after apply)
+      + ip_version              = "IPv4"
+      + location                = "westeurope"
+      + name                    = "example-public-ip"
+      + resource_group_name     = "example-resources"
+      + sku                     = "Standard"
+      + sku_tier                = "Regional"
+    }
+
+  # azurerm_resource_group.example will be created
+  + resource "azurerm_resource_group" "example" {
+      + id       = (known after apply)
+      + location = "westeurope"
+      + name     = "example-resources"
+    }
+
+  # azurerm_subnet.example will be created
+  + resource "azurerm_subnet" "example" {
+      + address_prefixes                              = [
+          + "10.0.2.0/24",
+        ]
+      + default_outbound_access_enabled               = true
+      + id                                            = (known after apply)
+      + name                                          = "internal"
+      + private_endpoint_network_policies             = "Disabled"
+      + private_link_service_network_policies_enabled = true
+      + resource_group_name                           = "example-resources"
+      + virtual_network_name                          = "example-network"
+    }
+
+  # azurerm_virtual_network.example will be created
+  + resource "azurerm_virtual_network" "example" {
+      + address_space                  = [
+          + "10.0.0.0/16",
+        ]
+      + dns_servers                    = (known after apply)
+      + guid                           = (known after apply)
+      + id                             = (known after apply)
+      + location                       = "westeurope"
+      + name                           = "example-network"
+      + private_endpoint_vnet_policies = "Disabled"
+      + resource_group_name            = "example-resources"
+      + subnet                         = (known after apply)
+    }
+
+Plan: 6 to add, 0 to change, 0 to destroy.
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
+~/DevOps--/terraform (practice ✚)> terraform apply -out
+╷
+│ Error: Failed to parse command-line flags
+│
+│ flag provided but not defined: -out
+╵
+
+For more help on using this command, run:
+  terraform apply -help
+~/DevOps--/terraform (practice ✚)> terraform apply
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # azurerm_linux_virtual_machine.example will be created
+  + resource "azurerm_linux_virtual_machine" "example" {
+      + admin_username                                         = "adminuser"
+      + allow_extension_operations                             = true
+      + bypass_platform_safety_checks_on_user_schedule_enabled = false
+      + computer_name                                          = (known after apply)
+      + disable_password_authentication                        = true
+      + disk_controller_type                                   = (known after apply)
+      + extensions_time_budget                                 = "PT1H30M"
+      + id                                                     = (known after apply)
+      + location                                               = "westeurope"
+      + max_bid_price                                          = -1
+      + name                                                   = "example-machine"
+      + network_interface_ids                                  = (known after apply)
+      + patch_assessment_mode                                  = "ImageDefault"
+      + patch_mode                                             = "ImageDefault"
+      + platform_fault_domain                                  = -1
+      + priority                                               = "Regular"
+      + private_ip_address                                     = (known after apply)
+      + private_ip_addresses                                   = (known after apply)
+      + provision_vm_agent                                     = true
+      + public_ip_address                                      = (known after apply)
+      + public_ip_addresses                                    = (known after apply)
+      + resource_group_name                                    = "example-resources"
+      + size                                                   = "Standard_F2"
+      + virtual_machine_id                                     = (known after apply)
+      + vm_agent_platform_updates_enabled                      = (known after apply)
+
+      + admin_ssh_key {
+          + public_key = <<-EOT
+                ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCrIGoDyZr2Cf47PrEr4XbWMLsQrugzOyY5fbmXDfSbhhCHRfqYRQNrSc0fwKUK6n6GU7fwZM57JpT5ABvR/UYJ2iLFJ/HYiZallE7ejyC2/Fo9NWarmAsrzNSwrz9gVEDGZMTenD5NAbmoWbJlZ+1OONIg156cuuSHuXZwJtncgeoAHoHgeSJYL5+88bD+2mh0puuBHLoFNl6ZQncxvfIHOq0I9EU5qveU9/cGgGX8ncKP69nZfUO0oSdnRoeY2A8McREX4kKErxm0N1FgteMac6FPt0V8sBSwX0xbgCgzHxpPDGWyhV6qkiBBVq35iYrH+Zg3a4UpOALhwxo46PLXtgtIKtGp3ard3oZSdNkuuHhiuUrfvObejqSfHun58+rcLKUeQeD9U7qjngR2xZc5cZ295Q64AAEQzJjpnzlk9X23FySf3saUsEzOhSlgShTwP8JoCAbCmrgoRvcJPMEKVRqScXnrBIE5HB3AiqNWVhcgXPXq2jZDqm+LgeyZX8qmWXtleyouv7tEeA00Jwx607/nTOoS5ShOcXf6ZbGGzRt/lJdJqENFph/avQ/pxC74Wd8mgLXjmVD86sODlTMT+sd5y+zX1eCMOt4kcQIM1J/r5v8hT/rxfAU2OXvfB5K0qH+7e2utYEXbFe4gfup46fFQkJImbC9RzC0GTJe14Q== archlinux@archlinux
+            EOT
+          + username   = "adminuser"
+        }
+
+      + os_disk {
+          + caching                   = "ReadWrite"
+          + disk_size_gb              = (known after apply)
+          + id                        = (known after apply)
+          + name                      = (known after apply)
+          + storage_account_type      = "Standard_LRS"
+          + write_accelerator_enabled = false
+        }
+
+      + source_image_reference {
+          + offer     = "0001-com-ubuntu-server-jammy"
+          + publisher = "Canonical"
+          + sku       = "22_04-lts"
+          + version   = "latest"
+        }
+
+      + termination_notification (known after apply)
+    }
+
+  # azurerm_network_interface.example will be created
+  + resource "azurerm_network_interface" "example" {
+      + accelerated_networking_enabled = false
+      + applied_dns_servers            = (known after apply)
+      + id                             = (known after apply)
+      + internal_domain_name_suffix    = (known after apply)
+      + ip_forwarding_enabled          = false
+      + location                       = "westeurope"
+      + mac_address                    = (known after apply)
+      + name                           = "example-nic"
+      + private_ip_address             = (known after apply)
+      + private_ip_addresses           = (known after apply)
+      + resource_group_name            = "example-resources"
+      + virtual_machine_id             = (known after apply)
+
+      + ip_configuration {
+          + gateway_load_balancer_frontend_ip_configuration_id = (known after apply)
+          + name                                               = "internal"
+          + primary                                            = (known after apply)
+          + private_ip_address                                 = (known after apply)
+          + private_ip_address_allocation                      = "Dynamic"
+          + private_ip_address_version                         = "IPv4"
+          + public_ip_address_id                               = (known after apply)
+          + subnet_id                                          = (known after apply)
+        }
+    }
+
+  # azurerm_public_ip.example will be created
+  + resource "azurerm_public_ip" "example" {
+      + allocation_method       = "Dynamic"
+      + ddos_protection_mode    = "VirtualNetworkInherited"
+      + fqdn                    = (known after apply)
+      + id                      = (known after apply)
+      + idle_timeout_in_minutes = 4
+      + ip_address              = (known after apply)
+      + ip_version              = "IPv4"
+      + location                = "westeurope"
+      + name                    = "example-public-ip"
+      + resource_group_name     = "example-resources"
+      + sku                     = "Standard"
+      + sku_tier                = "Regional"
+    }
+
+  # azurerm_resource_group.example will be created
+  + resource "azurerm_resource_group" "example" {
+      + id       = (known after apply)
+      + location = "westeurope"
+      + name     = "example-resources"
+    }
+
+  # azurerm_subnet.example will be created
+  + resource "azurerm_subnet" "example" {
+      + address_prefixes                              = [
+          + "10.0.2.0/24",
+        ]
+      + default_outbound_access_enabled               = true
+      + id                                            = (known after apply)
+      + name                                          = "internal"
+      + private_endpoint_network_policies             = "Disabled"
+      + private_link_service_network_policies_enabled = true
+      + resource_group_name                           = "example-resources"
+      + virtual_network_name                          = "example-network"
+    }
+
+  # azurerm_virtual_network.example will be created
+  + resource "azurerm_virtual_network" "example" {
+      + address_space                  = [
+          + "10.0.0.0/16",
+        ]
+      + dns_servers                    = (known after apply)
+      + guid                           = (known after apply)
+      + id                             = (known after apply)
+      + location                       = "westeurope"
+      + name                           = "example-network"
+      + private_endpoint_vnet_policies = "Disabled"
+      + resource_group_name            = "example-resources"
+      + subnet                         = (known after apply)
+    }
+
+Plan: 6 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+azurerm_resource_group.example: Creating...
+azurerm_resource_group.example: Still creating... [00m10s elapsed]
+azurerm_resource_group.example: Creation complete after 14s [id=/subscriptions/de353455-52c0-4fc5-a7a2-23403242432k/resourceGroups/example-resources]
+azurerm_virtual_network.example: Creating...
+azurerm_public_ip.example: Creating...
+azurerm_virtual_network.example: Creation complete after 8s [id=/subscriptions/de353455-52c0-4fc5-a7a2-23403242432k/resourceGroups/example-resources/providers/Microsoft.Network/virtualNetworks/example-network]
+azurerm_subnet.example: Creating...
+azurerm_subnet.example: Creation complete after 8s [id=/subscriptions/de353455-52c0-4fc5-a7a2-23403242432k/resourceGroups/example-resources/providers/Microsoft.Network/virtualNetworks/example-network/subnets/internal]
+╷
+│ Error: static IP allocation must be used when creating Standard SKU public IP addresses
+│
+│   with azurerm_public_ip.example,
+│   on main.tf line 39, in resource "azurerm_public_ip" "example":
+│   39: resource "azurerm_public_ip" "example" {
+│
+╵
+~/DevOps--/terraform (practice ✚)> terraform destroy
+azurerm_resource_group.example: Refreshing state... [id=/subscriptions/de353455-52c0-4fc5-a7a2-23403242432k/resourceGroups/example-resources]
+azurerm_virtual_network.example: Refreshing state... [id=/subscriptions/de353455-52c0-4fc5-a7a2-23403242432k/resourceGroups/example-resources/providers/Microsoft.Network/virtualNetworks/example-network]
+azurerm_subnet.example: Refreshing state... [id=/subscriptions/de353455-52c0-4fc5-a7a2-23403242432k/resourceGroups/example-resources/providers/Microsoft.Network/virtualNetworks/example-network/subnets/internal]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # azurerm_resource_group.example will be destroyed
+  - resource "azurerm_resource_group" "example" {
+      - id         = "/subscriptions/de353455-52c0-4fc5-a7a2-23403242432k/resourceGroups/example-resources" -> null
+      - location   = "westeurope" -> null
+      - name       = "example-resources" -> null
+      - tags       = {} -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # azurerm_subnet.example will be destroyed
+  - resource "azurerm_subnet" "example" {
+      - address_prefixes                              = [
+          - "10.0.2.0/24",
+        ] -> null
+      - default_outbound_access_enabled               = true -> null
+      - id                                            = "/subscriptions/de353455-52c0-4fc5-a7a2-23403242432k/resourceGroups/example-resources/providers/Microsoft.Network/virtualNetworks/example-network/subnets/internal" -> null
+      - name                                          = "internal" -> null
+      - private_endpoint_network_policies             = "Disabled" -> null
+      - private_link_service_network_policies_enabled = true -> null
+      - resource_group_name                           = "example-resources" -> null
+      - service_endpoint_policy_ids                   = [] -> null
+      - service_endpoints                             = [] -> null
+      - virtual_network_name                          = "example-network" -> null
+    }
+
+  # azurerm_virtual_network.example will be destroyed
+  - resource "azurerm_virtual_network" "example" {
+      - address_space                  = [
+          - "10.0.0.0/16",
+        ] -> null
+      - dns_servers                    = [] -> null
+      - flow_timeout_in_minutes        = 0 -> null
+      - guid                           = "5d249085-96ad-483c-97cf-dcfee0f88405" -> null
+      - id                             = "/subscriptions/de353455-52c0-4fc5-a7a2-23403242432k/resourceGroups/example-resources/providers/Microsoft.Network/virtualNetworks/example-network" -> null
+      - location                       = "westeurope" -> null
+      - name                           = "example-network" -> null
+      - private_endpoint_vnet_policies = "Disabled" -> null
+      - resource_group_name            = "example-resources" -> null
+      - subnet                         = [
+          - {
+              - address_prefixes                              = [
+                  - "10.0.2.0/24",
+                ]
+              - default_outbound_access_enabled               = true
+              - delegation                                    = []
+              - id                                            = "/subscriptions/de353455-52c0-4fc5-lssl-23403242432k/resourceGroups/example-resources/providers/Microsoft.Network/virtualNetworks/example-network/subnets/internal"
+              - name                                          = "internal"
+              - private_endpoint_network_policies             = "Disabled"
+              - private_link_service_network_policies_enabled = true
+              - service_endpoint_policy_ids                   = []
+              - service_endpoints                             = []
+                # (2 unchanged attributes hidden)
+            },
+        ] -> null
+      - tags                           = {} -> null
+        # (2 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 0 to change, 3 to destroy.
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+azurerm_subnet.example: Destroying... [id=/subscriptions/de353455-52c0-4fc5-a7a2-23403242432k/resourceGroups/example-resources/providers/Microsoft.Network/virtualNetworks/example-network/subnets/internal]
+azurerm_subnet.example: Still destroying... [id=/subscriptions/de353455-52c0-4fc5-a7a2-...works/example-network/subnets/internal, 00m10s elapsed]
+azurerm_subnet.example: Destruction complete after 12s
+azurerm_virtual_network.example: Destroying... [id=/subscriptions/de353455-52c0-4fc5-a7a2-23403242432k/resourceGroups/example-resources/providers/Microsoft.Network/virtualNetworks/example-network]
+azurerm_virtual_network.example: Still destroying... [id=/subscriptions/de353455-52c0-4fc5-a7a2-...etwork/virtualNetworks/example-network, 00m10s elapsed]
+azurerm_virtual_network.example: Destruction complete after 13s
+azurerm_resource_group.example: Destroying... [id=/subscriptions/de353455-52c0-4fc5-a7a2-23403242432k/resourceGroups/example-resources]
+azurerm_resource_group.example: Still destroying... [id=/subscriptions/de353455-52c0-4fc5-a7a2-...60f3e/resourceGroups/example-resources, 00m10s elapsed]
+azurerm_resource_group.example: Still destroying... [id=/subscriptions/de353455-52c0-4fc5-a7a2-...60f3e/resourceGroups/example-resources, 00m20s elapsed]
+azurerm_resource_group.example: Destruction complete after 23s
+
+Destroy complete! Resources: 3 destroyed.
