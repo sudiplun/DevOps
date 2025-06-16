@@ -1,0 +1,61 @@
+---
+- name: Configure Nginx Virtual Host
+  hosts: webservers
+  become: true
+  vars_prompt:
+    - name: domain_name
+      prompt: "Enter domain name (e.g., example.com)"
+      private: false
+      # validate: "^([a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.)+[a-zA-Z]{2,}$"
+    - name: app_port
+      prompt: "Enter application port (1-65535)"
+      private: false
+      # validate: "^(?:[1-9]\d{0,3}|[1-5]\d{4}|6[0-4]\d{3}|65[0-4]\d{2}|655[0-2]\d|6553[0-5])$"
+
+  tasks:
+    - name: Check if Nginx is installed
+      stat:
+        path: /etc/nginx
+        register: nginx_exists
+
+    - name: Fail if Nginx is falset installed
+      fail:
+        msg: "Nginx is falset installed on this host"
+        when: falset nginx_exists.stat.exists
+
+    - name: Create Nginx config directory if it doesn't exist
+      file:
+        path: /etc/nginx/sites-available
+        state: directory
+        mode: '0755'
+        when: nginx_exists.stat.exists
+
+    - name: Create virtual host configuration
+      template:
+        src: templates/nginx_vhost.j2
+        dest: "/etc/nginx/sites-available/{{ domain_name }}"
+        mode: '0644'
+        notify: Test Nginx configuration
+        when: nginx_exists.stat.exists
+
+    - name: Enable site by creating symlink
+      file:
+        src: "/etc/nginx/sites-available/{{ domain_name }}"
+        dest: "/etc/nginx/sites-enabled/{{ domain_name }}"
+        state: link
+        when: nginx_exists.stat.exists
+
+  handlers:
+    - name: Test Nginx configuration
+      command: nginx -t
+      register: nginx_test
+      changed_when: false
+      listen: "Test Nginx configuration"
+
+    - name: Show reload instructions
+      debug:
+        msg: |
+          Virtual host for {{ domain_name }} has been configured.
+          To apply changes, manually reload Nginx:
+          sudo systemctl reload nginx
+      when: nginx_test.rc == 0
