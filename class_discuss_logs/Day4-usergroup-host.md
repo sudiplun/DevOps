@@ -4,7 +4,6 @@
 - Changing Ownership Permission for a user/group.
 - Figuring out information from HTOP command.
 - knowing /etc/hosts and /etc/resolv.conf workflow.
-- videos been recorded available on teams.
 
 ## Task - Day - 04
 - Understand workflow of DNS.

@@ -1,4 +1,6 @@
-# logs branch 
-contains 
+## logs branch 
+
+**contains** 
+
 - class discuss logs (What we discuss daily..)
-- terminal output of running command
+- terminal output(error) while running command

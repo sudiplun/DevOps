@@ -1,4 +1,5 @@
-## Day 11 (log)
+## Day 11 
 - quick overview of docker 
-- deep-dive into dokcer-compose
+- deep-dive into docker-compose
+- restart options(policy)
 - surface overview on it parameter(networks)
