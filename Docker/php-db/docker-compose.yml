@@ -1,0 +1,38 @@
+services:
+  php-apache:
+    build: .
+    container_name: erms_app
+    ports:
+      - "3000:80"
+    depends_on:
+      - mariadb_server
+    environment:
+      DB_HOST: mariadb
+      DB_NAME: mydatabase
+      DB_USER: root
+      DB_PASS: pass@123 
+    volumes:
+      - .:/var/www/html
+    networks:
+      - my-network-erms
+
+  mariadb:
+    image: mariadb:lts
+    container_name: mariadb_server
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: pass@123
+      MYSQL_DATABASE: ermsdb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: pass@123
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - my-network-erms
+
+volumes:
+  mariadb_data:
+
+networks:
+  my-network-erms:
+    external: true
