@@ -3,14 +3,14 @@ services:
     build: .
     container_name: erms_app
     ports:
-      - "3000:80"
+      - "${port}:80"
     depends_on:
-      - mariadb_server
+      - mariadb
     environment:
-      DB_HOST: mariadb
-      DB_NAME: mydatabase
-      DB_USER: root
-      DB_PASS: pass@123 
+      DB_HOST: ${hostname}
+      DB_NAME: ${db_name}
+      DB_USER: ${db_user}
+      DB_PASS: ${db_password}
     volumes:
       - .:/var/www/html
     networks:
@@ -21,12 +21,13 @@ services:
     container_name: mariadb_server
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: pass@123
-      MYSQL_DATABASE: ermsdb
-      MYSQL_USER: root
-      MYSQL_PASSWORD: pass@123
+      MYSQL_ROOT_PASSWORD: ${db_password}
+      MYSQL_DATABASE: ${db_name}
+      MYSQL_USER: ${db_name}
+      MYSQL_PASSWORD: ${db_password}
     volumes:
       - mariadb_data:/var/lib/mysql
+      - ./erms.sql:/docker-entrypoint-initdb.d/erms.sql
     networks:
       - my-network-erms
 
