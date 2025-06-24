@@ -6,17 +6,17 @@ services:
       - "${port}:80"
     depends_on:
       - mariadb
-    environment:
-      DB_HOST: ${hostname}
-      DB_NAME: ${db_name}
-      DB_USER: ${db_user}
-      DB_PASS: ${db_password}
+    # environment:
+    #   DB_HOST: ${hostname}
+    #   DB_NAME: ${db_name}
+    #   DB_USER: ${db_user}
+    #   DB_PASS: ${db_password}
     volumes:
       - .:/var/www/html
     networks:
       - my-network-erms
 
-  mariadb:
+  mariadb: # service name will be a hostname.
     image: mariadb:lts
     container_name: mariadb_server
     restart: always
