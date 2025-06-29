@@ -1,4 +1,5 @@
 Kubernetes offers several service types, each designed for different networking needs: ClusterIP, NodePort, LoadBalancer, ExternalName, and Headless. These types control how traffic is routed to pods and whether the service is accessible within or outside the cluster. 
+
 Here's a breakdown:
 
 *ClusterIP*:
