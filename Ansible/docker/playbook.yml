@@ -5,7 +5,7 @@
   tasks:
     - name: Ensure docker install
       apt:
-        name: docker
+        name: docker.io
         state: present
     
     - name: Ensure docker is running
