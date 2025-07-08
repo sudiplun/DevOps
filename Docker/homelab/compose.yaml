@@ -1,0 +1,36 @@
+services:
+  nc:
+    container_name: homelab_nextcloud
+    image: nextcloud:latest
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PASSWORD=${password}
+      - POSTGRES_DB=${pg_db_name}
+      - POSTGRES_USER=${pg_username}
+    ports:
+      - 764:80
+    # restart: always
+    volumes:
+      - nc_data:/var/www/html
+    networks:
+      - homelab
+  db:
+    container_name: homelab_db
+    image: postgres:alpine
+    environment:
+      - POSTGRES_PASSWORD=${password}
+      - POSTGRES_DB=${pg_db_name}
+      - POSTGRES_USER=${pg_username}
+    # restart: always
+    volumes:
+      - nc_db_data:/var/lib/postgresql/data
+    expose:
+      - 5432
+    networks:
+      - homelab
+volumes:
+  nc_db_data:
+  nc_data:
+networks:
+  homelab:
+    external: true
