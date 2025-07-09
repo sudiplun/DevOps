@@ -45,9 +45,16 @@ lvextend -L +700M /dev/my_vg/my_lv
 
 ```bash
 lvcreate -L 200M -S -n snap1 /dev/my_vg/my_lv
+```
 
+```bash
+lvs
+lvdisplay
+lgs
+lgdisplay
+```
 
 ---
+
 all i did this on qemu, by creating a 2G virtual disk for practice
 `qemu-img create -f qcow2 lvm_disk.qcow2 2G` && mount with ` -drive file=lvm_disk.qcow2,format=qcow2`
-```
