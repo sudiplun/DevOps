@@ -91,3 +91,36 @@ This project demonstrates the power of containerization for simplifying applicat
 *   **Bare Metal Approach:** A traditional deployment on a bare-metal server would require manual installation and configuration of a web server (like Nginx or Apache), a database server (like MariaDB), and the correct version of PHP with necessary extensions (e.g., `php-fpm`, `php-mysql`). This process can be complex, error-prone, and difficult to replicate consistently across different environments.
 
 *   **Dockerized Approach:** By using Docker, we encapsulate the application and its dependencies into isolated containers. The `docker-compose.yml` file defines the entire stack as code, ensuring a consistent and reproducible environment. This eliminates the "it works on my machine" problem and streamlines the development-to-production workflow.
+
+---
+
+## Manual with nginx
+
+### install required packages
+
+`sudo apt install php php-fpm php-mysql`
+
+webserver,database and php-fpm must be run in place.
+
+_nginx config for path based serve_
+
+```bash
+server {
+    listen 80;
+    listen [::]:80;
+    server_name erms.example.com www.erms.example.com;
+
+    root /var/www/html/erms;
+    index index.php index.html index.htm;
+
+    location ~ \.php$ {
+    include snippets/fastcgi-php.conf;
+    fastcgi_pass unix:/run/php/php8.3-fpm.sock;  # adjust PHP version if needed
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    include fastcgi_params;
+    }
+    location ~ /\.ht {
+    deny all;
+    }
+}
+```
