@@ -1,50 +1,50 @@
-## install required packages
+*install required packages*
 
 `lvm2 dosfstools e2fsprogs`
 
-## see visible device
+*see attach physical device*
 
 `lsblk`
 
-## initializa as LVM physical volume
+*initializa as LVM physical volume*
 
 ```bash
 pvcreate /dev/sda
 ```
 
-## create a logical group
+*create a logical group*
 
 ```bash
-vgcreate my_vg /dev/sda
+vgcreate DR1 /dev/sda
 ```
 
-## create a logical volume
+*create a logical volume*
 
 ```bash
-lvcreate -L 1G -n my_lv my_vg
+lvcreate -L 10G -n DR1 root
 ```
 
-## Format and mount it
+*Format and mount it*
 
 ```bash
-mkfs -t ext4 /dev/my_vg/my_lv
+mkfs -t ext4 /dev/DR1/root
 mkdir /mnt/lvm-onrise
-mount /dev/my_vg/my_lv /mnt/lvm-onrise
+mount /dev/DR1/root /mnt/lvm-onrise
 ```
 
 check
 `df -h /mnt/lvm-onrise`
 
-## Extend by 700MB
+*Extend by 700MB*
 
 ```bash
-lvextend -L +700M /dev/my_vg/my_lv
+lvextend -L +40G /dev/DR1/root
 ```
 
-## create snapshot
+*create snapshot*
 
 ```bash
-lvcreate -L 200M -S -n snap1 /dev/my_vg/my_lv
+lvcreate -L 20G S -n snap1 /dev/DR1/root
 ```
 
 ```bash
@@ -56,5 +56,5 @@ lgdisplay
 
 ---
 
-all i did this on qemu, by creating a 2G virtual disk for practice
-`qemu-img create -f qcow2 lvm_disk.qcow2 2G` && mount with ` -drive file=lvm_disk.qcow2,format=qcow2`
+all i did this on qemu, by creating a 60G virtual disk for practice
+`qemu-img create -f qcow2 lvm_disk.qcow2 60G` && mount with ` -drive file=lvm_disk.qcow2,format=qcow2`
