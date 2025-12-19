@@ -1,0 +1,13 @@
+- name: Deploy Zabbix Agent (Active Mode)
+  hosts: all
+  become: "true"
+  vars:
+    zabbix_agent_server: [] # Not needed for active checks
+    zabbix_agent_serveractive: "10.10.10.69" # Required field (use dummy value)
+    zabbix_agent_hostname: "DEBIAN-12" # Must match Zabbix frontend hostname
+    zabbix_agent_startagents: 0 # Disable passive checks (active-only)
+    zabbix_agent_timeout: 30 # Set timeout to 30 seconds
+    zabbix_agent_listeners: [] # No passive listeners
+    zabbix_agent_listeners_tls: [] # TLS listeners (none for active-only)
+  roles:
+    - role: community.zabbix.zabbix_agent
