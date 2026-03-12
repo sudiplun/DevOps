@@ -1,13 +1,15 @@
-- name: Deploy Zabbix Agent (Active Mode)
+---
+- name: Install zabbix agent on RHEL
   hosts: all
-  become: "true"
+  become: true
   vars:
-    zabbix_agent_server: [] # Not needed for active checks
-    zabbix_agent_serveractive: "10.10.10.69" # Required field (use dummy value)
-    zabbix_agent_hostname: "DEBIAN-12" # Must match Zabbix frontend hostname
-    zabbix_agent_startagents: 0 # Disable passive checks (active-only)
-    zabbix_agent_timeout: 30 # Set timeout to 30 seconds
-    zabbix_agent_listeners: [] # No passive listeners
-    zabbix_agent_listeners_tls: [] # TLS listeners (none for active-only)
+    zabbix_agent_server: []
+    zabbix_agent_serveractive: "10.10.10.10" 
+    zabbix_agent_hostname: "SUDIP-DND"
+    zabbix_agent_startagents: 0
+    zabbix_agent_timeout: 30
+    zabbix_repo_package: true
+    # zabbix_agent_listeners: []
+    # zabbix_agent_listeners_tls: []
   roles:
     - role: community.zabbix.zabbix_agent
