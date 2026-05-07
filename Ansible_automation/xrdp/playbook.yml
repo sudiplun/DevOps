@@ -1,0 +1,55 @@
+---
+- name: Setup GNOME desktop and XRDP for RDP access
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Install GNOME core packages
+      apt:
+        name: gnome-core
+        state: present
+
+    - name: Install xrdp
+      apt:
+        name: xrdp
+        state: present
+
+    - name: Start and enable gdm3 service
+      systemd:
+        name: gdm3
+        state: started
+        enabled: yes
+
+    - name: Set system to boot to graphical.target by default
+      systemd:
+        name: graphical.target
+        enabled: yes
+
+    - name: Ensure WaylandEnable=false is set in /etc/gdm3/custom.conf
+      lineinfile:
+        path: /etc/gdm3/custom.conf
+        regexp: '^#?WaylandEnable='
+        line: 'WaylandEnable=false'
+        state: present
+        insertafter: EOF
+
+    - name: Ensure GNOME environment variables in /etc/xrdp/startwm.sh
+      blockinfile:
+        path: /etc/xrdp/startwm.sh
+        block: |
+          export GNOME_SHELL_SESSION_MODE=ubuntu
+          export XDG_CURRENT_DESKTOP=ubuntu:GNOME
+        marker: "# {mark} ANSIBLE MANAGED GNOME XRDP SETTINGS"
+
+    - name: Restart xrdp service
+      systemd:
+        name: xrdp
+        state: restarted
+
+    - name: Print completion message
+      debug:
+        msg: "GUI and RDP setup complete!"

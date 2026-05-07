@@ -1,11 +1,11 @@
 ---
 - name: Install zabbix agent on RHEL
-  hosts: all
+  hosts: mycloud
   become: true
   vars:
     zabbix_agent_server: []
-    zabbix_agent_serveractive: "10.10.10.10" 
-    zabbix_agent_hostname: "SUDIP-DND"
+    zabbix_agent_serveractive: "45.115.217.242" 
+    zabbix_agent_hostname: "WG-SUDIP"
     zabbix_agent_startagents: 0
     zabbix_agent_timeout: 30
     zabbix_repo_package: true

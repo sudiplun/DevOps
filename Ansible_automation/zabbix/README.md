@@ -9,7 +9,7 @@ https://galaxy.ansible.com/ui/repo/published/community/zabbix/
 ```bash
 sudo apt install ansible
 sudo dnf install ansible
-sudo pacman -S ansible
+sudo pacman -S ansible ansible-core
 ```
 
 ##### community.zabbix
@@ -20,6 +20,7 @@ sudo pacman -S ansible
 
 ```bash
 ansible-playbook playbook.yml -i inventory.ini
+ansible-playbook playbook.yml -i inventory.ini --ask-pass
 ```
 
-you need python on control node
+you need python3 on manage node
