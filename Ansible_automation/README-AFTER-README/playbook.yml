@@ -1,0 +1,12 @@
+---
+- name: Web servers
+  hosts: all
+  become: true
+  roles:
+    - webserver
+
+- name: Database servers
+  hosts: databases
+  become: true
+  roles:
+    - database

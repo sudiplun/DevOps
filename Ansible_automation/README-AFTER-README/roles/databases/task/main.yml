@@ -1,0 +1,11 @@
+---
+- name: Install latest postgresql
+  ansible.builtin.apt:
+    name: postgresql
+    state: latest
+
+- name: Ensure postgresql is started and enabled
+  ansible.builtin.service:
+    name: postgresql
+    state: started
+    enabled: true

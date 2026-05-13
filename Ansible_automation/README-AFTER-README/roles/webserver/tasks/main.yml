@@ -1,0 +1,14 @@
+---
+- name: Install nodejs and nginx
+  ansible.builtin.apt:
+    name:
+      - nodejs
+      - nginx
+    state: present
+
+- name: Ensure nginx is running and enabled
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: true
+  notify: restart nginx

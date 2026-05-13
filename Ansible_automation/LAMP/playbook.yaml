@@ -1,0 +1,50 @@
+---
+- name: Install LAMP Stack on Ubuntu
+  hosts: all
+  become: true
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install Apache2
+      apt:
+        name: apache2
+        state: present
+
+    - name: Start and enable Apache2
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+
+    - name: Install MySQL server
+      apt:
+        name: mysql-server
+        state: present
+
+    - name: Start and enable MySQL
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+
+    - name: Install PHP and required modules
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - php
+        - libapache2-mod-php
+        - php-mysql
+
+    - name: Create test PHP file
+      copy:
+        content: "<?php phpinfo(); ?>"
+        dest: /var/www/html/info.php
+        mode: '0644'
+
+    - name: Restart Apache2
+      service:
+        name: apache2
+        state: restarted

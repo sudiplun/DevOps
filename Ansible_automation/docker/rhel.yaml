@@ -1,0 +1,78 @@
+---
+- name: Install Docker Engine on RHEL
+  hosts: rhel
+  become: true
+  vars:
+    # Optional: specify a specific Docker version (e.g., "3:28.5.0-1.el9")
+    # Leave empty to install latest
+    docker_version: ""
+    docker_packages:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+
+  tasks:
+    - name: Ensure old Docker versions are removed
+      dnf:
+        name:
+          - docker
+          - docker-client
+          - docker-client-latest
+          - docker-common
+          - docker-latest
+          - docker-latest-logrotate
+          - docker-logrotate
+          - docker-engine
+          - podman
+          - runc
+        state: absent
+        autoremove: yes
+
+    - name: Install required packages for repository management
+      dnf:
+        name: dnf-plugins-core
+        state: present
+
+    - name: Add Docker CE repository
+      get_url:
+        url: https://download.docker.com/linux/rhel/docker-ce.repo
+        dest: /etc/yum.repos.d/docker-ce.repo
+        mode: '0644'
+
+    - name: Install Docker packages (latest or specific version)
+      dnf:
+        name: "{{ (docker_packages | map('regex_replace', '$', '-' + docker_version) if docker_version else docker_packages) }}"
+        state: present
+        disable_gpg_check: no
+      environment:
+        # Accept GPG key fingerprint automatically if needed
+        # (Only safe if you trust the repo!)
+        # Alternatively, import key manually beforehand
+        # See note below
+        LANG: en_US.UTF-8
+
+    - name: Start and enable Docker service
+      systemd:
+        name: docker
+        state: started
+        enabled: false
+
+    - name: Verify Docker installation with hello-world
+      command: docker run --rm hello-world
+      register: hello_result
+      changed_when: false
+      ignore_errors: true
+
+    - name: Display hello-world output
+      debug:
+        msg: "{{ hello_result.stdout_lines }}"
+      when: hello_result.stdout_lines is defined
+
+    - name: (Optional) Add user(s) to docker group for non-root usage
+      user:
+        name: "{{ ansible_user_id }}"
+        groups: docker
+        append: yes
+      when: ansible_user_id is defined and ansible_user_id != "root"
