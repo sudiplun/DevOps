@@ -1,0 +1,39 @@
+services:
+  php-apache:
+    build: .
+    container_name: erms_app
+    ports:
+      - "${port:-8980}:80"
+    depends_on:
+      - mariadb
+    environment:
+      DB_HOST: ${hostname:-mariadb}
+      DB_NAME: ${db_name:-erms}
+      DB_USER: ${db_user:-root}
+      DB_PASS: ${db_password:-root123}
+    volumes:
+      - .:/var/www/html
+    networks:
+      - my-network-erms
+
+  mariadb: # service name will be a hostname.
+    image: mariadb:lts
+    container_name: mariadb_server
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${db_password:-pass123}
+      MYSQL_DATABASE: ${db_name:-erms}
+      MYSQL_USER: ${db_name:-root}
+      MYSQL_PASSWORD: ${db_password:-root123}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./erms.sql:/docker-entrypoint-initdb.d/erms.sql
+    networks:
+      - my-network-erms
+
+volumes:
+  mariadb_data:
+
+networks:
+  my-network-erms:
+    external: true
